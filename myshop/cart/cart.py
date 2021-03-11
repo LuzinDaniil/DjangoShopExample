@@ -11,7 +11,7 @@ class Cart(object):
         if not cart:
             # Сохраняем в сессии пустую корзину.
             cart = self.session[settings.CART_SESSION_ID] = {}
-            self.cart = cart
+        self.cart = cart
 
     def __iter__(self):
         """Проходим по товарам корзины и получаем соответствующие объекты Product."""
@@ -23,8 +23,8 @@ class Cart(object):
             cart[str(product.id)]['product'] = product
         for item in cart.values():
             item['price'] = Decimal(item['price'])
-        item['total_price'] = item['price'] * item['quantity']
-        yield item
+            item['total_price'] = item['price'] * item['quantity']
+            yield item
 
     def __len__(self):
         """Возвращает общее количество товаров в корзине."""
@@ -39,6 +39,7 @@ class Cart(object):
             self.cart[product_id]['quantity'] = quantity
         else:
             self.cart[product_id]['quantity'] += quantity
+
         self.save()
 
     def remove(self, product):
